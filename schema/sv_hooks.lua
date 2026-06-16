@@ -130,7 +130,9 @@ function Schema:PlayerFootstep(client, position, foot, soundName, volume)
 		return runSoundsOver
 	end
 	if ((walkSounds ~= "NIL") and not client:IsRunning()) then
-		client:EmitSound(walkSounds[foot])
+		if walkSounds[foot] then
+			client:EmitSound(walkSounds[foot])
+		end
 		return walkSoundsOver
 	end
 	client:EmitSound(soundName)
@@ -276,12 +278,12 @@ function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers,
 						netstream.Start(nil, "PlaySound", info.sound)
 					else
 						local sounds = {info.sound}
-
+						--[[
 						if (speaker:IsCOG()) then
 							speaker.bTypingBeep = nil
 							sounds[#sounds + 1] = snd
 						end
-
+						--]]
 						ix.util.EmitQueuedSounds(speaker, sounds, nil, nil, volume)
 					end
 				end
@@ -453,21 +455,26 @@ function Schema:PlayerSpray(client)
 	return true
 end
 
+
 netstream.Hook("PlayerChatTextChanged", function(client, key)
+	--[[
 	local snd = client:GetRoleData("radioOn", "NPC_MetroPolice.Radio.On")
 	if (client:IsCOG() and !client.bTypingBeep
 	and (key == "y" or key == "w" or key == "r" or key == "t")) then
 		client:EmitSound(snd)
 		client.bTypingBeep = true
 	end
+	--]]
 end)
 
 netstream.Hook("PlayerFinishChat", function(client)
+	--[[
 	local snd = client:GetRoleData("radioOff", "NPC_MetroPolice.Radio.Off")
 	if (client:IsCOG() and client.bTypingBeep) then
 		client:EmitSound(snd)
 		client.bTypingBeep = nil
 	end
+	--]]
 end)
 
 netstream.Hook("ViewDataUpdate", function(client, target, text)

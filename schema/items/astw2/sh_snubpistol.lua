@@ -10,4 +10,4 @@ ITEM.iconCam = {
 }
 
 ITEM.class = "astw2_gow_snub_pistol_v2"
-ITEM.weaponCategory = "secondary"
+ITEM.weaponCategory = "sidearm"

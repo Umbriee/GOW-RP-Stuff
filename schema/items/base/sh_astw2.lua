@@ -129,15 +129,15 @@ function ITEM:Equip(client, bNoSelect, bNoSound)
 	client:Give(self.class, !self.isGrenade)
 	timer.Simple(0.05, function()
 		if not self then 
-			print("Not valid self") 
+			-- print("Not valid self") 
 			return
 		end
 		if not IsValid(client) then
-			print("Not valid client")
+			-- print("Not valid client")
 			return
 		end
 		local weapon = client:HasWeapon(self.class) and client:GetWeapon(self.class) or NULL
-		print(self,self.class,weapon,self.isGrenade)
+		-- print(self,self.class,weapon,self.isGrenade)
 		if IsValid(weapon) then
 			local ammoType = weapon:GetPrimaryAmmoType()
 			client.carryWeapons[self.weaponCategory] = weapon

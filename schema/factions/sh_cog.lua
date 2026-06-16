@@ -86,7 +86,7 @@ sound.Add( { -- GOWRP.COGTacComOn
 
 FACTION.runSounds 		= {[0] = "GOWRP.COGRun", [1] = "GOWRP.COGRun"}
 FACTION.runOverride 	= false
-FACTION.walkSounds		= {[0] = "GOWRP.COGWalk", [1] = "GOWRP.COGWalk"}
+FACTION.walkSounds		= {[0] = "GOWRP.COGWalk"}
 FACTION.walkOverride	= false
 FACTION.radioOff		= "GOWRP.COGTacComOff"
 FACTION.radioOn			= "GOWRP.COGTacComOn"
@@ -99,12 +99,17 @@ function FACTION:OnCharacterCreated(client, character)
 
 	inventory:Add("snubpistol", 1)
 	inventory:Add("pistolammo", 2)
+	inventory:Add("duffel",1) -- Until I can find that kit thingy.
 
 	local number = Schema:ZeroNumber(math.random(1, 99999), 5)
 	inventory:Add("cogtag",1,{
 		id = number,
 		name = character:GetName()
 	})
+	local numberleft = string.Left(number,2)
+	local numberright = string.Right(number,3)
+	character:SetData("id", number)
+	character:SetData("callsign","COG "..numberleft.."-"..numberright)
 	character:SetName("Gear-RCT "..number.." "..character:GetName())
 end
 

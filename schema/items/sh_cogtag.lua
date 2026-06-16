@@ -1,5 +1,5 @@
 ITEM.name = "COG Tags"
-ITEM.description = "A set of some COG-tags. They lightly clink and jingle in your hands. They have some words engraved onto them.\nID: '%s'\nName: '%s'"
+ITEM.description = "A set of some COG-tags. Two sets of metal plates in the shape of gears. They lightly clink and jingle in your hands. They have something engraved onto each of them.\nCOG %s\n%s"
 ITEM.model = Model("models/weapons/gow/cog_tags_ms_smesh.mdl")
 ITEM.width = 1
 ITEM.height = 1
@@ -11,5 +11,10 @@ ITEM.iconCam = {
 }
 
 function ITEM:GetDescription()
-	return string.format(self.description, self:GetData("id", "00000"), self:GetData("name", "nobody"))
+	local id = self:GetData("id", "00000")
+	local numberleft = string.Left(id,2)
+	local numberright = string.Right(id,3)
+	local COG = numberleft.."-"..numberright
+	local NAME = self:GetData("name", "nobody")
+	return string.format(self.description, COG, NAME)
 end
