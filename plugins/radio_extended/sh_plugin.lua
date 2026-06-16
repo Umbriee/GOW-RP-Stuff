@@ -334,7 +334,7 @@ function playSound(target,voiceprefix,sending,distance,radioType) -- Fun new fun
 	-- end
 
 	-- local range = math.random(ix.config.Get("chatRange",280)-10, ix.config.Get("chatRange",280)+10)
-  local soundDist = ix.config.Get("radioSoundDistance",280)
+	local soundDist = ix.config.Get("radioSoundDistance",280)
 	local range = math.random(soundDist-10, soundDist+10)
 	local pitchmod = math.random(110 - 50*distance, 120 - 50*distance) -- Pitch shifts the receive beep with increasing distance
 	local pitchmodAlt = math.random(50,50)
@@ -347,28 +347,29 @@ function playSound(target,voiceprefix,sending,distance,radioType) -- Fun new fun
 	else
 		volume = 0.3
 	end
-
+	local radioOn	= target:GetRoleData("radioOn",		"NPC_MetroPolice.Radio.On")
+	local radioOff	= target:GetRoleData("radioOff",	"NPC_MetroPolice.Radio.Off")
 	if ix.config.Get("radioSounds",true) then
 		if sending then
 			-- Walkie talkie sounds
 			if radioType == "walkietalkie" or radioType == "duplexwalkie" or radioType == "hybridwalkie" then
-				target:EmitSound("GOWRP.RadioStart",range,100 - 20*distance, 0.5*volume)
-				timer.Simple(0.05, function() target:EmitSound("GOWRP.RadioStart", range, 110, volume) end)
-				timer.Simple(0.7, function() target:EmitSound("GOWRP.RadioEnd", range, math.random(115,120),volume) end)
+				target:EmitSound(radioOn,range,100 - 20*distance, 0.5*volume)
+				timer.Simple(0.05, function() target:EmitSound(radioOn, range, 110, volume) end)
+				timer.Simple(0.7, function() target:EmitSound(radioOff, range, math.random(115,120),volume) end)
 			-- Regular radio sounds
 			else--if radioType == "duplexradio" or radioType == "handheld_radio" then
 				target:EmitSound(voiceprefix.."1"..".wav", range, pitchmodAlt,0.2)
-				timer.Simple(0.05, function() target:EmitSound("GOWRP.RadioStart", range, 110, volume) end)
+				timer.Simple(0.05, function() target:EmitSound(radioOn, range, 110, volume) end)
 				timer.Simple(0.7, function() target:EmitSound(voiceprefix.."1"..".wav", range, pitchmodAlt2,volume) end)
 				timer.Simple(0.77, function() target:EmitSound(voiceprefix.."1"..".wav", range, pitchmodAlt2,volume) end)
 			end
 		else
 			if radioType == "walkietalkie" or radioType == "duplexwalkie" or radioType == "hybridwalkie" then
-				timer.Simple(0.3,function() target:EmitSound("GOWRP.RadioEnd",range,110 - 20*distance, 0.3) end)
-				timer.Simple(0.1,function() target:EmitSound("GOWRP.RadioEnd",range,110 - 20*distance, 0.2) end)
+				timer.Simple(0.3,function() target:EmitSound(radioOff,range,110 - 20*distance, 0.3) end)
+				timer.Simple(0.1,function() target:EmitSound(radioOff,range,110 - 20*distance, 0.2) end)
 			else--if radioType == "duplexradio" or radioType == "handheld_radio" then
 				target:EmitSound(voiceprefix..whichnoise..".wav", range, pitchmod,0.2)
-				timer.Simple(0.3,function() target:EmitSound("GOWRP.RadioEnd",range,110 - 20*distance, 0.3) end)
+				timer.Simple(0.3,function() target:EmitSound(radioOff,range,110 - 20*distance, 0.3) end)
 			end
 		end
 	end
@@ -404,14 +405,15 @@ function endChatter(listener, distance, radioType)
 		local range = ix.config.Get("chatRange",280) -- math.random(ix.config.Get("chatRange",280), (1.5)*ix.config.Get("chatRange",280))
 		--local startSound = "GOWRP.RadioStart"
 		--startSound = "GOWRP.RadioStart"
-
-		listener:EmitSound("GOWRP.RadioStart",range,100 - 20*distFrac, volume)
+		local radioOn	= listener:GetRoleData("radioOn",	"NPC_MetroPolice.Radio.On")
+		local radioOff	= listener:GetRoleData("radioOff",	"NPC_MetroPolice.Radio.Off")
+		listener:EmitSound(radioOn,range,100 - 20*distFrac, volume)
 		--listener:EmitSound(startSound,range,100 - 20*distFrac, 0.5*volume)
 		timer.Simple(1, function()
 			if (!listener:IsValid() or !listener:Alive()) then
 				return false
 			end
-			playSound(listener,"GOWRP.RadioEnd",false,distFrac,radioType)
+			playSound(listener,radioOff,false,distFrac,radioType)
 		end)
 	end
 end
@@ -1050,15 +1052,16 @@ function PLUGIN:OverwriteClasses()
 		function CLASS:OnChatAdd(speaker, text, bAnonymous, data)
 			-- text = string.format("<:: %s ::>", text)
 			local dist = LocalPlayer():GetPos():Distance(speaker:GetPos())
-
+			local radioOn	= speaker:GetRoleData("radioOn",	"NPC_MetroPolice.Radio.On")
+			local radioOff	= speaker:GetRoleData("radioOff",	"NPC_MetroPolice.Radio.Off")
 			-- Sending sound handling
 			if !data.quiet then
 				if data.walkie then
 					--print("Yes")
-					playSound(speaker, "GOWRP.RadioStart", true, 0, "walkietalkie")
+					playSound(speaker, radioOn, true, 0, "walkietalkie")
 				else
 					--print("No")
-					playSound(speaker, "GOWRP.RadioStart", true, 0, "handheld_radio")
+					playSound(speaker, radioOn, true, 0, "handheld_radio")
 				end
 			end
 
