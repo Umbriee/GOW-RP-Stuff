@@ -1,6 +1,13 @@
-ITEM.name = "Pulse-Rifle Energy"
-ITEM.model = "models/items/combine_rifle_cartridge01.mdl"
-ITEM.ammo = "ar2" -- type of the ammo
-ITEM.ammoAmount = 30 -- amount of the ammo
-ITEM.description = "A Cartridge that contains %s of AR2 Ammo"
-ITEM.classes = {CLASS_EOW}
+ITEM.name = "Rifle Ammo Box"
+ITEM.description = "An ammo box containing %s of standard rifle bullets."
+ITEM.model = "models/weapons/gow/ammo/ammo_case.mdl"
+ITEM.width = 4
+ITEM.height = 3
+ITEM.iconCam = {
+	pos = Vector(175.34, 609.88, 369.72),
+	ang = Angle(29.6, 254, 0),
+	fov = 2.28
+}
+
+ITEM.ammo = "ar2"
+ITEM.ammoAmount = 600

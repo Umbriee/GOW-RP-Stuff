@@ -1,7 +1,7 @@
 
-Schema.name = "HL2 RP"
-Schema.author = "nebulous.cloud"
-Schema.description = "A schema based on Half-Life 2."
+Schema.name = "Gears of War RP"
+Schema.author = "Umbree Jones"
+Schema.description = "A Gears server development server. Why are you here."
 
 -- Include netstream
 ix.util.Include("libs/thirdparty/sh_netstream2.lua")
@@ -34,9 +34,11 @@ function Schema:ZeroNumber(number, length)
 	return string.rep("0", amount)..tostring(number)
 end
 
-function Schema:IsCombineRank(text, rank)
+function Schema:IsRank(text, rank)
 	return string.find(text, "[%D+]"..rank.."[%D+]")
 end
+
+ix.currency.model = Model("models/weapons/gow/ammo/money_stack.mdl")
 
 do
 	local CLASS = {}
@@ -79,7 +81,7 @@ do
 	end
 
 	function CLASS:OnChatAdd(speaker, text)
-		text = speaker:IsCombine() and string.format("<:: %s ::>", text) or text
+		-- text = speaker:IsCOG() and string.format("<:: %s ::>", text) or text
 		chat.AddText(self.color, string.format(self.format, speaker:Name(), text))
 	end
 
@@ -110,7 +112,7 @@ do
 	end
 
 	function CLASS:OnChatAdd(speaker, text)
-		text = speaker:IsCombine() and string.format("<:: %s ::>", text) or text
+		-- text = speaker:IsCOG() and string.format("<:: %s ::>", text) or text
 		chat.AddText(self.color, string.format(self.format, speaker:Name(), text))
 	end
 
@@ -123,7 +125,7 @@ do
 	CLASS.format = "%s requests \"%s\""
 
 	function CLASS:CanHear(speaker, listener)
-		return listener:IsCombine() or speaker:Team() == FACTION_ADMIN
+		return listener:IsCOG()
 	end
 
 	function CLASS:OnChatAdd(speaker, text)
@@ -162,11 +164,11 @@ do
 	CLASS.format = "%s broadcasts \"%s\""
 
 	function CLASS:CanSay(speaker, text)
-		if (speaker:Team() != FACTION_ADMIN) then
-			speaker:NotifyLocalized("notAllowed")
+		-- if  then
+			-- speaker:NotifyLocalized("notAllowed")
 
-			return false
-		end
+			-- return false
+		-- end
 	end
 
 	function CLASS:OnChatAdd(speaker, text)

@@ -5,7 +5,7 @@ function playerMeta:IsScanner()
 end
 
 function playerMeta:AddCombineDisplayMessage(text, color, ...)
-	if (self:IsCombine()) then
+	if (self:IsCOG()) then
 		netstream.Start(self, "CombineDisplayMessage", text, color or false, {...})
 	end
 end

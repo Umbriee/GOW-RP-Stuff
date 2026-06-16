@@ -14,7 +14,7 @@ function Schema:AddCombineDisplayMessage(text, color, exclude, ...)
 	end
 
 	for _, v in ipairs(player.GetAll()) do
-		if (v:IsCombine() and v != exclude) then
+		if (v:IsCOG() and v != exclude) then
 			receivers[#receivers + 1] = v
 		end
 	end

@@ -1,8 +1,13 @@
-ITEM.name = ".357 Magnum Bullets"
-ITEM.model = "models/items/357ammo.mdl"
-ITEM.ammo = "357" -- type of the ammo
-ITEM.ammoAmount = 12 -- amount of the ammo
-ITEM.description = "A Box that contains %s of .357 Ammo"
-ITEM.classes = {CLASS_EOW}
-ITEM.price = 10
-ITEM.flag = "V"
+ITEM.name = "Revolver Magazine"
+ITEM.description = "A set of reserve ammo that contains %s of standardized revolver ammo."
+ITEM.model = "models/weapons/gow/ammo/ammo_magazine_alt.mdl"
+ITEM.width = 1
+ITEM.height = 2
+ITEM.iconCam = {
+	pos = Vector(723.54, 104.82, 10.45),
+	ang = Angle(0.31, 188.24, 0),
+	fov = 0.72
+}
+
+ITEM.ammo = "357"
+ITEM.ammoAmount = 60

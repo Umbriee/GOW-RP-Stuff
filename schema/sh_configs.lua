@@ -1,13 +1,13 @@
 
-ix.currency.symbol = ""
-ix.currency.singular = "token"
-ix.currency.plural = "tokens"
+ix.currency.symbol = "$"
+ix.currency.singular = "Dollar"
+ix.currency.plural = "Dollars"
 
 ix.config.SetDefault("scoreboardRecognition", true)
 ix.config.SetDefault("music", "music/hl2_song19.mp3")
 ix.config.SetDefault("maxAttributes", 60)
 
-ix.config.Add("rationTokens", 20, "The amount of tokens that a person will get from a ration", nil, {
+ix.config.Add("rationDollars", 20, "The amount of Dollars that a person will get from a ration", nil, {
 	data = {min = 0, max = 1000},
 	category = "economy"
 })

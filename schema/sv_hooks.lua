@@ -16,7 +16,7 @@ function Schema:SaveData()
 end
 
 function Schema:PlayerSwitchFlashlight(client, enabled)
-	if (client:IsCombine()) then
+	if (client:IsCOG()) then
 		return true
 	end
 end
@@ -26,7 +26,7 @@ function Schema:PlayerUse(client, entity)
 		return false
 	end
 
-	if ((client:IsCombine() or client:Team() == FACTION_ADMIN) and entity:IsDoor() and IsValid(entity.ixLock) and client:KeyDown(IN_SPEED)) then
+	if (client:IsCOG() and entity:IsDoor() and IsValid(entity.ixLock) and client:KeyDown(IN_SPEED)) then
 		entity.ixLock:Toggle(client)
 		return false
 	end
@@ -54,7 +54,7 @@ function Schema:PlayerUse(client, entity)
 end
 
 function Schema:PlayerUseDoor(client, door)
-	if (client:IsCombine()) then
+	if (client:IsCOG()) then
 		if (!door:HasSpawnFlags(256) and !door:HasSpawnFlags(1024)) then
 			door:Fire("open")
 		end
@@ -66,7 +66,7 @@ function Schema:PlayerLoadout(client)
 end
 
 function Schema:PostPlayerLoadout(client)
-	if (client:IsCombine()) then
+	if (client:IsCOG()) then
 		if (client:Team() == FACTION_OTA) then
 			client:SetMaxHealth(150)
 			client:SetHealth(150)
@@ -81,7 +81,7 @@ function Schema:PostPlayerLoadout(client)
 			client.ixScanner:SetMaxHealth(client:GetMaxHealth())
 			client:StripWeapons()
 		else
-			client:SetArmor(self:IsCombineRank(client:Name(), "RCT") and 50 or 100)
+			client:SetArmor(self:IsRank(client:Name(), "RCT") and 50 or 100)
 		end
 
 		local factionTable = ix.faction.Get(client:Team())
@@ -103,7 +103,7 @@ function Schema:PlayerLoadedCharacter(client, character, oldCharacter)
 
 	if (faction == FACTION_CITIZEN) then
 		self:AddCombineDisplayMessage("@cCitizenLoaded", Color(255, 100, 255, 255))
-	elseif (client:IsCombine()) then
+	elseif (client:IsCOG()) then
 		client:AddCombineDisplayMessage("@cCombineLoaded")
 	end
 end
@@ -119,24 +119,30 @@ function Schema:CharacterVarChanged(character, key, oldValue, value)
 	end
 end
 
+
 function Schema:PlayerFootstep(client, position, foot, soundName, volume)
-	local factionTable = ix.faction.Get(client:Team())
-
-	if (factionTable.runSounds and client:IsRunning()) then
-		client:EmitSound(factionTable.runSounds[foot])
-		return true
+	local runSounds = client:GetRoleData("runSounds", nil)
+	local runSoundsOver = client:GetRoleData("runOverride",false)
+	local walkSounds = client:GetRoleData("walkSounds", nil)
+	local walkSoundsOver = client:GetRoleData("walkOverride",false)
+	if ((runSounds ~= "NIL") and client:IsRunning()) then
+		client:EmitSound(runSounds[foot])
+		return runSoundsOver
 	end
-
+	if ((walkSounds ~= "NIL") and not client:IsRunning()) then
+		client:EmitSound(walkSounds[foot])
+		return walkSoundsOver
+	end
 	client:EmitSound(soundName)
 	return true
 end
 
 function Schema:PlayerSpawn(client)
-	client:SetCanZoom(client:IsCombine())
+	client:SetCanZoom(client:IsCOG())
 end
 
 function Schema:PlayerDeath(client, inflicter, attacker)
-	if (client:IsCombine()) then
+	if (client:IsCOG()) then
 		local location = client:GetArea() or "unknown location"
 
 		self:AddCombineDisplayMessage("@cLostBiosignal")
@@ -158,7 +164,7 @@ function Schema:PlayerDeath(client, inflicter, attacker)
 		sounds[#sounds + 1] = "npc/overwatch/radiovoice/off4.wav"
 
 		for k, v in ipairs(player.GetAll()) do
-			if (v:IsCombine()) then
+			if (v:IsCOG()) then
 				ix.util.EmitQueuedSounds(v, sounds, 2, nil, v == client and 100 or 80)
 			end
 		end
@@ -184,7 +190,7 @@ function Schema:PlayerHurt(client, attacker, health, damage)
 		return
 	end
 
-	if (client:IsCombine() and (client.ixTraumaCooldown or 0) < CurTime()) then
+	if (client:IsCOG() and (client.ixTraumaCooldown or 0) < CurTime()) then
 		local text = "External"
 
 		if (damage > 50) then
@@ -210,35 +216,34 @@ function Schema:PlayerStaminaGained(client)
 end
 
 function Schema:GetPlayerPainSound(client)
+	local sound = client:GetRoleData( "painSND","NPC_MetroPolice.Pain")
 	if (client:IsCombine()) then
-		local sound = "NPC_MetroPolice.Pain"
-
 		if (Schema:IsCombineRank(client:Name(), "SCN")) then
 			sound = "NPC_CScanner.Pain"
 		elseif (Schema:IsCombineRank(client:Name(), "SHIELD")) then
 			sound = "NPC_SScanner.Pain"
 		end
-
+	end
+	if client:IsCombine() then
 		return sound
 	end
 end
 
 function Schema:GetPlayerDeathSound(client)
+	local sound = client:GetRoleData( "dieSND", "NPC_MetroPolice.Die")
 	if (client:IsCombine()) then
-		local sound = "NPC_MetroPolice.Die"
-
 		if (Schema:IsCombineRank(client:Name(), "SCN")) then
 			sound = "NPC_CScanner.Die"
 		elseif (Schema:IsCombineRank(client:Name(), "SHIELD")) then
 			sound = "NPC_SScanner.Die"
 		end
-
+	end
+	if (client:IsCombine()) then
 		for k, v in ipairs(player.GetAll()) do
 			if (v:IsCombine()) then
 				v:EmitSound(sound)
 			end
 		end
-
 		return sound
 	end
 end
@@ -250,6 +255,7 @@ function Schema:OnNPCKilled(npc, attacker, inflictor)
 end
 
 function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+	local snd = speaker:GetRoleData("radioOff", "NPC_MetroPolice.Radio.Off")
 	if (chatType == "ic" or chatType == "w" or chatType == "y" or chatType == "dispatch") then
 		local class = self.voices.GetClass(speaker)
 
@@ -271,28 +277,124 @@ function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers,
 					else
 						local sounds = {info.sound}
 
-						if (speaker:IsCombine()) then
+						if (speaker:IsCOG()) then
 							speaker.bTypingBeep = nil
-							sounds[#sounds + 1] = "NPC_MetroPolice.Radio.Off"
+							sounds[#sounds + 1] = snd
 						end
 
 						ix.util.EmitQueuedSounds(speaker, sounds, nil, nil, volume)
 					end
 				end
 
-				if (speaker:IsCombine()) then
-					return string.format("<:: %s ::>", info.text)
+				if (speaker:IsCOG()) then
+					return info.text--string.format("<:: %s ::>", info.text)
 				else
 					return info.text
 				end
 			end
 		end
 
-		if (speaker:IsCombine()) then
-			return string.format("<:: %s ::>", text)
+		if (speaker:IsCOG()) then
+			return text-- string.format("<:: %s ::>", text)
 		end
 	end
 end
+
+function Schema:PlayerStaminaLost(client)
+	client:AddCombineDisplayMessage("LOCAL :: Excessive user exertion injecting stimulant", Color(255, 255, 0, 255))
+end
+
+function Schema:PlayerStaminaGained(client)
+	client:AddCombineDisplayMessage("LOCAL :: Stimulant implanted", Color(0, 255, 0, 255))
+end
+
+function Schema:GetPlayerPainSound(client)
+	local sound = client:GetRoleData( "painSND","NPC_MetroPolice.Pain")
+	if (client:IsCOG()) then
+		if (Schema:IsRank(client:Name(), "SCN")) then
+			sound = "NPC_CScanner.Pain"
+		elseif (Schema:IsRank(client:Name(), "SHIELD")) then
+			sound = "NPC_SScanner.Pain"
+		end
+	end
+	if client:IsCOG() then
+		return sound
+	end
+end
+
+function Schema:GetPlayerDeathSound(client)
+	local sound = client:GetRoleData( "dieSND", "NPC_MetroPolice.Die")
+	if (client:IsCOG()) then
+		if (Schema:IsRank(client:Name(), "SCN")) then
+			sound = "NPC_CScanner.Die"
+		elseif (Schema:IsRank(client:Name(), "SHIELD")) then
+			sound = "NPC_SScanner.Die"
+		end
+	end
+	if (client:IsCOG()) then
+		for k, v in ipairs(player.GetAll()) do
+			if (v:IsCOG()) then
+				v:EmitSound(sound)
+			end
+		end
+		return sound
+	end
+end
+
+function Schema:OnNPCKilled(npc, attacker, inflictor)
+	if (IsValid(npc.ixPlayer)) then
+		hook.Run("PlayerDeath", npc.ixPlayer, inflictor, attacker)
+	end
+end
+
+function Schema:PlayerStaminaLost(client)
+	client:AddCombineDisplayMessage("LOCAL :: Excessive user exertion injecting stimulant", Color(255, 255, 0, 255))
+end
+
+function Schema:PlayerStaminaGained(client)
+	client:AddCombineDisplayMessage("LOCAL :: Stimulant implanted", Color(0, 255, 0, 255))
+end
+
+function Schema:GetPlayerPainSound(client)
+	local sound = client:GetRoleData( "painSND","NPC_MetroPolice.Pain")
+	if (client:IsCOG()) then
+		if (Schema:IsRank(client:Name(), "SCN")) then
+			sound = "NPC_CScanner.Pain"
+		elseif (Schema:IsRank(client:Name(), "SHIELD")) then
+			sound = "NPC_SScanner.Pain"
+		end
+	end
+	if client:IsCOG() then
+		return sound
+	end
+end
+
+function Schema:GetPlayerDeathSound(client)
+	local sound = client:GetRoleData( "dieSND", "NPC_MetroPolice.Die")
+	if (client:IsCOG()) then
+		if (Schema:IsRank(client:Name(), "SCN")) then
+			sound = "NPC_CScanner.Die"
+		elseif (Schema:IsRank(client:Name(), "SHIELD")) then
+			sound = "NPC_SScanner.Die"
+		end
+	end
+	if (client:IsCOG()) then
+		for k, v in ipairs(player.GetAll()) do
+			if (v:IsCOG()) then
+				v:EmitSound(sound)
+			end
+		end
+		return sound
+	end
+end
+
+function Schema:OnNPCKilled(npc, attacker, inflictor)
+	if (IsValid(npc.ixPlayer)) then
+		hook.Run("PlayerDeath", npc.ixPlayer, inflictor, attacker)
+	end
+end
+
+
 
 function Schema:CanPlayerJoinClass(client, class, info)
 	if (client:IsRestricted()) then
@@ -352,16 +454,18 @@ function Schema:PlayerSpray(client)
 end
 
 netstream.Hook("PlayerChatTextChanged", function(client, key)
-	if (client:IsCombine() and !client.bTypingBeep
+	local snd = client:GetRoleData("radioOn", "NPC_MetroPolice.Radio.On")
+	if (client:IsCOG() and !client.bTypingBeep
 	and (key == "y" or key == "w" or key == "r" or key == "t")) then
-		client:EmitSound("NPC_MetroPolice.Radio.On")
+		client:EmitSound(snd)
 		client.bTypingBeep = true
 	end
 end)
 
 netstream.Hook("PlayerFinishChat", function(client)
-	if (client:IsCombine() and client.bTypingBeep) then
-		client:EmitSound("NPC_MetroPolice.Radio.Off")
+	local snd = client:GetRoleData("radioOff", "NPC_MetroPolice.Radio.Off")
+	if (client:IsCOG() and client.bTypingBeep) then
+		client:EmitSound(snd)
 		client.bTypingBeep = nil
 	end
 end)

@@ -76,7 +76,7 @@ do
 		local character = client:GetCharacter()
 		local inventory = character:GetInventory()
 
-		if (inventory:HasItem("request_device") or client:IsCombine() or client:Team() == FACTION_ADMIN) then
+		if (inventory:HasItem("request_device") or client:IsCOG()) then
 			if (!client:IsRestricted()) then
 				Schema:AddCombineDisplayMessage("@cRequest")
 

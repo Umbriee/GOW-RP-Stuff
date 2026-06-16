@@ -1,11 +1,13 @@
-ITEM.name = "RPG Missile"
-ITEM.model = "models/weapons/w_missile_closed.mdl"
-ITEM.ammo = "rpg_round" -- type of the ammo
-ITEM.ammoAmount = 1 -- amount of the ammo
-ITEM.width = 2
-ITEM.description = "A Package of %s Rockets"
+ITEM.name = "Rocket Ammo Box"
+ITEM.description = "A rocket box containing %s of standard rocket ammo. A label states its for an HCR, whatever that means."
+ITEM.model = "models/weapons/gow/ammo/ammo_box_alt.mdl"
+ITEM.width = 3
+ITEM.height = 2
 ITEM.iconCam = {
-	ang	= Angle(-0.70499622821808, 268.25439453125, 0),
-	fov	= 12.085652091515,
-	pos	= Vector(7, 200, -2)
+	pos = Vector(175.34, 609.88, 369.72),
+	ang = Angle(29.6, 254, 0),
+	fov = 2.28
 }
+
+ITEM.ammo = "rpg_round"
+ITEM.ammoAmount = 10

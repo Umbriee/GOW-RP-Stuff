@@ -1,5 +1,5 @@
 LANGUAGE = {
-	schemaName = "Half-Life 2 Roleplay",
+	schemaName = "Gears of War IX:RP",
 	tying = "Tying...",
 	unTying = "Untying...",
 	isTied = "Tied",
@@ -9,7 +9,7 @@ LANGUAGE = {
 	beingTied = "They are being tied up.",
 	beingUntied = "They are being untied.",
 	needRequestDevice = "You need a request device to do this.",
-	vendingNeedMoney = "You need %s tokens to purchase this.",
+	vendingNeedMoney = "You need %s Dollars to purchase this.",
 	vendingPurchased = "You purchased a drink for %s.",
 	vendingRestocked = "You have restocked some drinks.",
 	cantViewData = "You cannot view this person's data.",

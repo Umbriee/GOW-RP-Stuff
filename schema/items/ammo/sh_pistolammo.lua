@@ -1,7 +1,13 @@
-ITEM.name = "9mm Pistol Bullets"
-ITEM.model = "models/items/357ammo.mdl"
-ITEM.ammo = "pistol" -- type of the ammo
-ITEM.ammoAmount = 30 -- amount of the ammo
-ITEM.description = "A Box that contains %s of Pistol Ammo"
-ITEM.classes = {CLASS_EMP, CLASS_EOW}
-ITEM.flag = "V"
+ITEM.name = "Pistol Magazine"
+ITEM.description = "A set of reserve ammo that contains %s of standardized pistol ammo."
+ITEM.model = "models/weapons/gow/ammo/ammo_magazine.mdl"
+ITEM.width = 1
+ITEM.height = 2
+ITEM.iconCam = {
+	pos = Vector(723.54, 104.82, 10.45),
+	ang = Angle(0.31, 188.24, 0),
+	fov = 0.72
+}
+
+ITEM.ammo = "pistol"
+ITEM.ammoAmount = 100

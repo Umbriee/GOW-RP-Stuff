@@ -117,7 +117,7 @@ if (SERVER) then
 
 		local character = client:GetCharacter()
 
-		if (!character:IsCombine()) then
+		if (!character:IsCOG()) then
 			local itemInfo = self.Items[buttonID]
 			local price = itemInfo[3]
 

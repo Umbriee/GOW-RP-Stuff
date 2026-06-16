@@ -1,0 +1,8 @@
+"ixgowrp"
+{
+	"base"			"helix"
+	"title"			"IX:Gears of War RP"
+	"author"		"Umbreer"
+	"category"		"rp"
+	"menusystem"	"1"
+}

@@ -1,7 +1,13 @@
-ITEM.name = "SMG Bullets"
-ITEM.model = "models/Items/BoxSRounds.mdl"
-ITEM.ammo = "smg1" -- type of the ammo
-ITEM.ammoAmount = 45 -- amount of the ammo
-ITEM.description = "A Box that contains %s of SMG Ammo"
-ITEM.classes = {CLASS_EMP, CLASS_EOW}
-ITEM.flag = "V"
+ITEM.name = "SMG Ammo Box"
+ITEM.description = "An ammo box containing %s of standard SMG bullets."
+ITEM.model = "models/weapons/gow/ammo/ammo_case_alt.mdl"
+ITEM.width = 2
+ITEM.height = 2
+ITEM.iconCam = {
+	pos = Vector(0, 200, 0),
+	ang = Angle(-3.44, 270.06, 0),
+	fov = 7.68
+}
+
+ITEM.ammo = "smg1"
+ITEM.ammoAmount = 600

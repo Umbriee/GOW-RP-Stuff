@@ -20,20 +20,20 @@ end
 
 -- called when the client wants to view the combine data for the given target
 function Schema:CanPlayerViewData(client, target)
-	return client:IsCombine() and (!target:IsCombine() and target:Team() != FACTION_ADMIN)
+	return client:IsCOG() and (!target:IsCOG())
 end
 
 -- called when the client wants to edit the combine data for the given target
 function Schema:CanPlayerEditData(client, target)
-	return client:IsCombine() and (!target:IsCombine() and target:Team() != FACTION_ADMIN)
+	return client:IsCOG() and (!target:IsCOG())
 end
 
 function Schema:CanPlayerViewObjectives(client)
-	return client:IsCombine()
+	return client:IsCOG()
 end
 
 function Schema:CanPlayerEditObjectives(client)
-	if (!client:IsCombine() or !client:GetCharacter()) then
+	if (!client:IsCOG() or !client:GetCharacter()) then
 		return false
 	end
 
@@ -41,7 +41,7 @@ function Schema:CanPlayerEditObjectives(client)
 	local name = client:GetCharacter():GetName()
 
 	for k, v in ipairs({"OfC", "EpU", "DvL", "SeC"}) do
-		if (self:IsCombineRank(name, v)) then
+		if (self:IsRank(name, v)) then
 			bCanEdit = true
 			break
 		end

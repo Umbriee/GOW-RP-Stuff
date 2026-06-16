@@ -21,7 +21,7 @@ end
 local COMMAND_PREFIX = "/"
 
 function Schema:ChatTextChanged(text)
-	if (LocalPlayer():IsCombine()) then
+	if (LocalPlayer():IsCOG()) then
 		local key = nil
 
 		if (text == COMMAND_PREFIX .. "radio ") then
@@ -49,7 +49,7 @@ function Schema:CanPlayerJoinClass(client, class, info)
 end
 
 function Schema:CharacterLoaded(character)
-	if (character:IsCombine()) then
+	if (character:IsCOG()) then
 		vgui.Create("ixCombineDisplay")
 	elseif (IsValid(ix.gui.combine)) then
 		ix.gui.combine:Remove()
@@ -80,8 +80,9 @@ function Schema:RenderScreenspaceEffects()
 	colorModify["$pp_colour_colour"] = 0.77
 
 	if (system.IsWindows()) then
-		colorModify["$pp_colour_brightness"] = -0.02
+		colorModify["$pp_colour_brightness"] = -0.08
 		colorModify["$pp_colour_contrast"] = 1.2
+		colorModify["$pp_colour_colour"] = 0.6
 	else
 		colorModify["$pp_colour_brightness"] = 0
 		colorModify["$pp_colour_contrast"] = 1
@@ -94,14 +95,14 @@ function Schema:RenderScreenspaceEffects()
 
 	DrawColorModify(colorModify)
 
-	if (LocalPlayer():IsCombine()) then
+	if (LocalPlayer():IsCOG()) then
 		render.UpdateScreenEffectTexture()
 
 		combineOverlay:SetFloat("$alpha", 0.5)
 		combineOverlay:SetInt("$ignorez", 1)
 
-		render.SetMaterial(combineOverlay)
-		render.DrawScreenQuad()
+		-- render.SetMaterial(combineOverlay)
+		-- render.DrawScreenQuad()
 	end
 end
 
