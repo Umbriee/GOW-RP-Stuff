@@ -56,7 +56,7 @@ end
 
 do
 	local KEY_BLACKLIST = bit.bor( IN_ATTACK, IN_ATTACK2 )
-	function GM:StartCommand(client, command)
+	function Schema:StartCommand(client, command)
 		if not client:InVehicle() then
 			if (!client:CanShootWeapon()) then
 				command:RemoveKey(KEY_BLACKLIST)
