@@ -11,10 +11,47 @@ FACTION.models = {
 	"models/gearsofwar/players/custom/cog/anthony_carmine.mdl",
 
 	"models/gearsofwar/players/custom/cog/benjamin_carmine.mdl",
-	"models/gearsofwar/players/custom/cog/benjamin_carmine_gow2.mdl",
+	{"models/gearsofwar/players/custom/cog/benjamin_carmine_gow2.mdl",0,{0}},
 
-	"models/gearsofwar/players/custom/cog/cog_template.mdl",
-	"models/gearsofwar/players/custom/cog/cog_template_female.mdl"
+	{ -- If you're curious, I have to do [1] just so I can keep compatability with a lot, and a lot, of things at once.
+		[1]		= "models/gearsofwar/players/custom/cog/cog_template.mdl",
+		-- customskin	= {0,1},
+		customgroups	= {
+			Body	= {
+				index		= 1,
+				min			= 0,
+				max			= 2
+			},
+			Helmet	= {
+				index		= 2,
+				min			= 0,
+				max			= 5
+			},
+			Torso	= {
+				index		= 3,
+				min			= 0,
+				max			= 26,
+				blacklist	= {1,21,22}
+			},
+			Arms	= {
+				index		= 4,
+				min			= 0,
+				max			= 20,
+				blacklist	= {1,16,17,22}
+			},
+			Pants	={
+				index		= 5,
+				min			= 0,
+				max			= 26,
+				blacklist	= {1,21}
+			}
+		}
+	},
+	"models/gearsofwar/players/custom/cog/cog_template_female.mdl",
+	{
+		[1] = "models/gearsofwar/players/custom/cog/baird_gowj.mdl",
+		customskin = {0,2}
+	}
 }
 FACTION.weapons = {
 	-- "ix_stunstick"
