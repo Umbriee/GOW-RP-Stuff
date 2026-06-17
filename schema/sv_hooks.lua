@@ -112,7 +112,7 @@ function Schema:CharacterVarChanged(character, key, oldValue, value)
 	local client = character:GetPlayer()
 	if (key == "name") then
 		local factionTable = ix.faction.Get(client:Team())
-
+		if not factionTable then return end
 		if (factionTable.OnNameChanged) then
 			factionTable:OnNameChanged(client, oldValue, value)
 		end
@@ -257,6 +257,7 @@ function Schema:OnNPCKilled(npc, attacker, inflictor)
 end
 
 function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+	if not IsValid(speaker) then return end
 	local snd = speaker:GetRoleData("radioOff", "NPC_MetroPolice.Radio.Off")
 	if (chatType == "ic" or chatType == "w" or chatType == "y" or chatType == "dispatch") then
 		local class = self.voices.GetClass(speaker)
