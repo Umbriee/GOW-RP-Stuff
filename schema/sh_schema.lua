@@ -1,7 +1,7 @@
 
 Schema.name = "Gears of War RP"
 Schema.author = "Umbree Jones"
-Schema.description = "A Gears server development server. Why are you here."
+Schema.description = "A Gears of War RP Development server. Why are you here."
 
 -- Include netstream
 ix.util.Include("libs/thirdparty/sh_netstream2.lua")
