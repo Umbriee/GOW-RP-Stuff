@@ -20,10 +20,28 @@ if CLIENT then
 		["panel"]	=	Panel: [name:ixInfoBar][class:Panel][0,0,716,10]
 		["priority"]	=	6
 	]]
+	local blacklistedidentifiers = {
+		"health",
+		"armor"
+	}
+	print("--")
+	PrintTable(ix.bar.list)
 	function huddraw:DrawStatuses(client,char)
 		self.savedata = self.savedata or {}
 		local int = 0
 		for i, data in pairs(ix.bar.list) do
+			if blacklistedidentifiers then
+				local match = false
+				for _, blacklist in pairs(blacklistedidentifiers) do
+					if string.lower(blacklist) == string.lower(data.identifier) then
+						match = true
+						break
+					end
+				end
+				if match then
+					continue
+				end
+			end
 			self.savedata[data.identifier] = self.savedata[data.identifier] or {}
 			local sd = self.savedata[data.identifier]
 			local value = 1
