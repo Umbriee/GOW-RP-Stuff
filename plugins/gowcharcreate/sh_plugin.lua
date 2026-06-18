@@ -45,7 +45,7 @@ ix.char.RegisterVar("model", {
 		local content = scroll:Add("DPanel")
 		content:Dock(FILL)
 		content:SetPaintBackground(false)
-		content:SetTall(384)
+		content:SetTall(448)
 		local layout = content:Add("DIconLayout")
 		layout:Dock(TOP)
 		layout:SetSpaceX(1)

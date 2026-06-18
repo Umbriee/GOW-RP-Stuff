@@ -3,6 +3,7 @@ FACTION.description = "The Coalition of Ordered Governments, COG. Soldiers."
 FACTION.color = Color(50, 100, 150)
 FACTION.pay = 10
 FACTION.models = {
+	--[[
 	"models/gearsofwar/players/custom/cog/redshirt_gow1.mdl",
 	"models/gearsofwar/players/custom/cog/redshirt.mdl",
 	"models/gearsofwar/players/custom/cog/redshirt_gow3.mdl",
@@ -11,11 +12,11 @@ FACTION.models = {
 	"models/gearsofwar/players/custom/cog/anthony_carmine.mdl",
 
 	"models/gearsofwar/players/custom/cog/benjamin_carmine.mdl",
-	{"models/gearsofwar/players/custom/cog/benjamin_carmine_gow2.mdl",0,{0}},
-
+	"models/gearsofwar/players/custom/cog/benjamin_carmine_gow2.mdl",
+	--]]
 	{ -- If you're curious, I have to do [1] just so I can keep compatability with a lot, and a lot, of things at once.
-		[1]		= "models/gearsofwar/players/custom/cog/cog_template.mdl",
-		-- customskin	= {0,1},
+		[1]					= "models/gearsofwar/players/custom/cog/cog_template.mdl",
+		-- customskin			= {0,1},
 		customgroups	= {
 			Body	= {
 				index		= 1,
@@ -30,27 +31,64 @@ FACTION.models = {
 			Torso	= {
 				index		= 3,
 				min			= 0,
-				max			= 26,
+				max			= 24,
 				blacklist	= {1,21,22}
 			},
 			Arms	= {
 				index		= 4,
 				min			= 0,
-				max			= 20,
-				blacklist	= {1,16,17,22}
+				max			= 19,
+				blacklist	= {1,16,15,17}
 			},
 			Pants	={
 				index		= 5,
 				min			= 0,
-				max			= 26,
+				max			= 24,
 				blacklist	= {1,21}
 			}
 		}
 	},
-	"models/gearsofwar/players/custom/cog/cog_template_female.mdl",
 	{
-		[1] = "models/gearsofwar/players/custom/cog/baird_gowj.mdl",
-		customskin = {0,2}
+		[1]					= "models/gearsofwar/players/custom/cog/cog_template_female.mdl",
+		customgroups	= {
+			Head	= {
+				index		= 1,
+				min			= 0,
+				max			= 8,
+				blacklist	= {4}
+			},
+			Helmet	= {
+				index		= 2,
+				min			= 0,
+				max			= 16,
+				blacklist	= {6,7,8}
+			},
+			Torso	= {
+				index		= 3,
+				min			= 0,
+				max			= 3
+			},
+			Pants	= {
+				index		= 4,
+				min			= 0,
+				max			= 3
+			},
+			Arms	= {
+				index		= 5,
+				min			= 0,
+				max			= 4
+			},
+			Shoulders	= {
+				index		= 6,
+				min			= 0,
+				max			= 4
+			},
+			Utility		= {
+				index		= 7,
+				min			= 0,
+				max			= 5
+			}
+		}
 	}
 }
 FACTION.weapons = {
@@ -146,7 +184,7 @@ function FACTION:OnCharacterCreated(client, character)
 	local numberleft = string.Left(number,2)
 	local numberright = string.Right(number,3)
 	character:SetData("id", number)
-	character:SetData("callsign","COG "..numberleft.."-"..numberright)
+	character:SetData("callsign","*COG "..numberleft.."-"..numberright.."*")
 	character:SetName("Gear-RCT "..number.." "..character:GetName())
 end
 
