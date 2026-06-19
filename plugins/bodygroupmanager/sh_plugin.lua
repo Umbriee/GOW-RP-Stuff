@@ -22,6 +22,14 @@ ix.command.Add("CharEditBodygroup", {
 	end
 })
 
+ix.command.Add("EditBodygroup", {
+	description = "@cmdEditBodygroup",
+	OnRun = function(self, client)
+		net.Start("ixBodygroupView")
+			net.WriteEntity(client)
+		net.Send(client)
+	end
+})
 properties.Add("ixEditBodygroups", {
 	MenuLabel = "#Edit Bodygroups",
 	Order = 10,
