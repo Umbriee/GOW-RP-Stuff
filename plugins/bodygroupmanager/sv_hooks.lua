@@ -7,11 +7,12 @@ ix.log.AddType("bodygroupEditor", function(client, target)
 end)
 
 net.Receive("ixBodygroupTableSet", function(length, client)
-	if (!ix.command.HasAccess(client, "CharEditBodygroup")) then
-		return
-	end
-
 	local target = net.ReadEntity()
+	if target ~= client then
+		if (!ix.command.HasAccess(client, "CharEditBodygroup")) then
+			return
+		end
+	end
 
 	if (!IsValid(target) or !target:IsPlayer() or !target:GetCharacter()) then
 		return
