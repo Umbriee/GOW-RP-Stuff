@@ -12,6 +12,10 @@ net.Receive("ixBodygroupTableSet", function(length, client)
 		if (!ix.command.HasAccess(client, "CharEditBodygroup")) then
 			return
 		end
+	else
+		if (!ix.command.HasAccess(client, "EditBodygroup")) then
+			return
+		end
 	end
 
 	if (!IsValid(target) or !target:IsPlayer() or !target:GetCharacter()) then
