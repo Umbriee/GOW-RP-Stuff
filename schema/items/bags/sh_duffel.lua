@@ -1,13 +1,13 @@
-ITEM.name			= "Duffel Bag"
-ITEM.description	= "A small duffel bag used for storing items."
-ITEM.model			= Model("models/gow_props/s_otherobjects_luggage_02.mdl")
-ITEM.width			= 3
-ITEM.height			= 2
+ITEM.name			= "COG Duffel Bag Kit"
+ITEM.description	= "A small standard issue COG duffel bag used for storing items."
+ITEM.model			= Model("models/gow2/characters/cog_dufflebag.mdl")
+ITEM.width			= 2
+ITEM.height			= 3
 ITEM.iconCam = {
-	pos = Vector(509.64, 427.61, 310.24),
-	ang = Angle(25.09, 220.04, 0),
-	fov = 2.25
+	pos = Vector(-574.06, -444.9, 61.9),
+	ang = Angle(3.58, 397.83, 0),
+	fov = 1.96
 }
 
-ITEM.invWidth		= 6
-ITEM.invHeight		= 3
+ITEM.invWidth		= 3
+ITEM.invHeight		= 6
