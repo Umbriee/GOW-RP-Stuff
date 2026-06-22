@@ -44,7 +44,7 @@ function PANEL:Init()
 	createButton:SetZPos(-99)
 	createButton:Dock(BOTTOM)
 	createButton.DoClick = function()
-		ix.command.Send("PTCreate")
+		ix.command.Send("SquadCreate")
 	end
 
 	self.teamsPanel:SizeToContents()
@@ -59,7 +59,7 @@ function PANEL:Init()
 		leaveButton:SizeToContents()
 		leaveButton:Dock(BOTTOM)
 		leaveButton.DoClick = function()
-			ix.command.Send("PTLeave")
+			ix.command.Send("SquadLeave")
 		end
 	end
 
@@ -85,7 +85,7 @@ function PANEL:AddTeam(name)
 		local reassignMenu = DermaMenu(this)
 
 		reassignMenu:AddOption(L("TeamReassign"), function()
-			Derma_StringRequest(L("cmdPTReassign"), L("cmdReassignPTDesc"), name, function(text) ix.command.Send("PTReassign", text, name) end)
+			Derma_StringRequest(L("cmdPTReassign"), L("cmdReassignPTDesc"), name, function(text) ix.command.Send("SquadReassign", text, name) end)
 		end)
 
 		reassignMenu:Open()
@@ -149,7 +149,7 @@ function PANEL:OnTeamSelected(index)
 		self.joinButton:SizeToContents()
 		self.joinButton:Dock(BOTTOM)
 		self.joinButton.DoClick = function(this)
-			ix.command.Send("PTJoin", index)
+			ix.command.Send("SquadJoin", index)
 		end
 	end
 end
@@ -216,11 +216,11 @@ hook.Add("PopulateTeamMenu", "ixTeamMenu", function(tabs)
 					end
 
 					interactMenu:AddOption(L("TeamTransferOwner"), function()
-						ix.command.Send("PTLead", v2.client:Name())
+						ix.command.Send("SquadLead", v2.client:Name())
 					end):SetIcon( "icon16/award_star_gold_1.png" )
 
 					interactMenu:AddOption(L("TeamKickMember"), function()
-						ix.command.Send("PTKick", v2.client:Name())
+						ix.command.Send("SquadKick", v2.client:Name())
 					end):SetIcon( "icon16/cross.png" )
 
 					interactMenu:Open()
